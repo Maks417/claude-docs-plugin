@@ -1,10 +1,10 @@
 ---
-description: Create or update the project's docs/ folder (index, architecture, domain model, brandbook, per-feature docs) via the docs-keeper agent.
-allowed-tools: Task, Read, Write, Edit, Glob, Grep, Bash
+description: Create or update the project's docs/ folder (index, architecture, domain model, brandbook, per-feature docs). Wraps the docs-keeper skill.
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
-Route the request below to the **docs-keeper** agent (use the Task tool with
-`subagent_type: docs-keeper`). Parse `$ARGUMENTS` to decide the intent:
+Follow the **docs-keeper** skill for the full workflow, templates, and conventions. Parse
+`$ARGUMENTS` to choose the intent:
 
 - **`init`** — Locate or create the docs directory, then generate the four core docs:
   `index.md`, `architecture.md`, `domain-model.md`, `brandbook.md`. Derive everything from
