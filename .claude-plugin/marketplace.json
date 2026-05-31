@@ -2,6 +2,9 @@
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "docs-tools",
   "description": "Documentation-keeping plugin",
+  "owner": {
+    "name": "docs-tools"
+  },
   "plugins": [
     {
       "name": "docs-keeper",
