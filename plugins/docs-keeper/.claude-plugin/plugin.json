@@ -1,0 +1,6 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "docs-keeper",
+  "description": "Creates and maintains a project's docs/ folder: an index, architecture, domain model, brandbook/design system, and one doc per major feature. Diagrams use Mermaid.",
+  "version": "0.1.0"
+}
