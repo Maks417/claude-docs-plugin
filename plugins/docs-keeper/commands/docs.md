@@ -14,6 +14,8 @@ Follow the **docs-keeper** skill for the full workflow, templates, and conventio
 - **`architecture`** — Refresh only `docs/architecture.md`.
 - **`domain`** — Refresh only `docs/domain-model.md`.
 - **`brand`** — Refresh only `docs/brandbook.md`.
+- **`legal`** — Refresh only `docs/legal.md` (GDPR and other regulatory posture).
+- **`owasp`** — Refresh only `docs/owasp.md` (security posture mapped to the OWASP Top 10).
 - **`sync`** — Re-derive the link tables in `docs/index.md` from the docs that actually
   exist on disk (add missing links, remove dead ones).
 - **no arguments** — Summarize the current state of the docs directory (what exists, what's

@@ -1,6 +1,6 @@
 ---
 name: docs-keeper
-description: Create and maintain a project's documentation under a docs/ folder — an index, an architecture doc, a domain-model doc, a brandbook/design system, and one doc per major feature. Use when the user asks to document a project, write or update the architecture/domain/brand docs, add a feature doc, or run "/docs ...". All diagrams are Mermaid.
+description: Create and maintain a project's documentation under a docs/ folder — an index, an architecture doc, a domain-model doc, a brandbook/design system, a legal/GDPR compliance doc, an OWASP security posture doc, and one doc per major feature. Use when the user asks to document a project, write or update the architecture/domain/brand/legal/owasp docs, add a feature doc, or run "/docs ...". All diagrams are Mermaid.
 ---
 
 # docs-keeper
@@ -47,6 +47,8 @@ links stay stable.
 | `docs/architecture.md` | Components/layers, responsibilities, data flow + Mermaid diagram |
 | `docs/domain-model.md` | Key entities, invariants, relationships + Mermaid ER diagram |
 | `docs/brandbook.md` | Brand voice, colors, typography, tokens, core components |
+| `docs/legal.md` | Legal/compliance posture — GDPR primary, extensible to other frameworks |
+| `docs/owasp.md` | Security posture mapped to the OWASP Top 10 — code-derived, not a live findings log |
 | `docs/features/<kebab-name>.md` | One per major feature |
 
 ### What "major feature" means
@@ -73,6 +75,8 @@ don't apply rather than padding them.
 | [Architecture](architecture.md) | How the parts fit together |
 | [Domain model](domain-model.md) | Entities, relationships, invariants |
 | [Brandbook & design system](brandbook.md) | Brand, colors, typography, components |
+| [Legal & compliance](legal.md) | GDPR and other regulatory posture |
+| [Security posture (OWASP)](owasp.md) | Code-derived mapping to the OWASP Top 10 |
 
 ### Features
 | Feature | Doc |
@@ -152,6 +156,95 @@ erDiagram
 <Core UI building blocks and their intended use.>
 ```
 
+### `docs/legal.md`
+```markdown
+# Legal & compliance
+
+> This document supports compliance work derived from the codebase; it is not legal advice.
+> Have counsel review before relying on it.
+
+## GDPR
+
+### Personal data inventory
+| Data category | Field(s) | Where stored | Source |
+|---|---|---|---|
+
+### Legal basis for processing
+| Purpose | Data used | Legal basis (Art. 6) |
+|---|---|---|
+
+### Data subject rights
+<How access / erasure / portability / rectification requests are fulfilled today, or _TBD_.>
+
+### Retention
+| Data | Retention period | Deletion mechanism |
+|---|---|---|
+
+### Third-party processors / sub-processors
+| Vendor | Purpose | Data shared | DPA in place? |
+|---|---|---|---|
+
+### Cookies & tracking
+<Categories, purpose, consent mechanism — pull from actual cookie/consent code if present.>
+
+### Cross-border transfers
+<Mechanism, e.g. SCCs, if applicable, or _TBD_.>
+
+## Other frameworks
+<Add a subsection per additional framework the project needs (CCPA, HIPAA, etc.), following
+the same shape: what data, what obligation, what's implemented, what's _TBD_.>
+```
+
+### `docs/owasp.md`
+```markdown
+# Security posture (OWASP Top 10)
+
+> Snapshot derived from the codebase. Not a substitute for a real security audit or pentest.
+
+## A01: Broken Access Control
+| Area | Control in place | File(s) | Notes / gaps |
+|---|---|---|---|
+
+## A02: Cryptographic Failures
+| Area | Control in place | File(s) | Notes / gaps |
+|---|---|---|---|
+
+## A03: Injection
+| Area | Control in place | File(s) | Notes / gaps |
+|---|---|---|---|
+
+## A04: Insecure Design
+| Area | Control in place | File(s) | Notes / gaps |
+|---|---|---|---|
+
+## A05: Security Misconfiguration
+| Area | Control in place | File(s) | Notes / gaps |
+|---|---|---|---|
+
+## A06: Vulnerable and Outdated Components
+| Area | Control in place | File(s) | Notes / gaps |
+|---|---|---|---|
+
+## A07: Identification and Authentication Failures
+| Area | Control in place | File(s) | Notes / gaps |
+|---|---|---|---|
+
+## A08: Software and Data Integrity Failures
+| Area | Control in place | File(s) | Notes / gaps |
+|---|---|---|---|
+
+## A09: Security Logging and Monitoring Failures
+| Area | Control in place | File(s) | Notes / gaps |
+|---|---|---|---|
+
+## A10: Server-Side Request Forgery (SSRF)
+| Area | Control in place | File(s) | Notes / gaps |
+|---|---|---|---|
+
+## Open items
+- <Gap identified while documenting, not yet fixed — cite the file/area.>
+```
+
 ### `docs/features/<feature>.md`
 ````markdown
 # Feature: <Name>
@@ -189,7 +282,9 @@ sequenceDiagram
 - After creating, renaming, or deleting any doc, **update the link tables in `index.md`**
   so navigation never goes stale.
 - Pull real values where they exist: design tokens for the brandbook, the ORM
-  schema/migrations for the domain model, routers/route files for features.
+  schema/migrations for the domain model, routers/route files for features, data-handling
+  code (DB schema, cookie/consent logic, third-party SDKs) for `legal.md`, and
+  auth/input-validation/config code for `owasp.md`.
 
 ## Step 5 — Report back
 
@@ -200,7 +295,7 @@ updated, and any `_TBD_` sections that need the user's input.
 
 - **Claude Code / IDE:** write files directly into the docs directory with the file tools.
   The bundled `/docs` command is a convenient trigger (`/docs init`, `/docs feature <name>`,
-  `/docs architecture|domain|brand`, `/docs sync`).
+  `/docs architecture|domain|brand|legal|owasp`, `/docs sync`).
 - **Claude Desktop:** if a filesystem connector or Project with file access is available,
   write the docs there. Otherwise, produce each document's full Markdown content in the
   conversation, clearly labeled by file path, so the user can save it into `docs/`.

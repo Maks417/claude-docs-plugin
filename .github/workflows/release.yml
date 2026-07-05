@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing tag to (re)build a release for
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
+
+      - name: Resolve tag name
+        id: tag
+        run: echo "name=${{ inputs.tag || github.ref_name }}" >> "$GITHUB_OUTPUT"
+
+      - name: Build skill zip (for Claude Desktop)
+        run: |
+          cd plugins/docs-keeper/skills/docs-keeper
+          zip -r "$GITHUB_WORKSPACE/docs-keeper-skill-${{ steps.tag.outputs.name }}.zip" .
+
+      - name: Build marketplace bundle zip (for Claude Code manual/offline install)
+        run: |
+          zip -r "claude-docs-plugin-${{ steps.tag.outputs.name }}.zip" \
+            .claude-plugin plugins README.md
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.name }}
+          generate_release_notes: true
+          files: |
+            docs-keeper-skill-${{ steps.tag.outputs.name }}.zip
+            claude-docs-plugin-${{ steps.tag.outputs.name }}.zip
